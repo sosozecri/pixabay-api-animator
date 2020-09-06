@@ -1,0 +1,24 @@
+<resources>
+    <!-- APPLICATION -->
+    <string name="app_name">WithingsTest</string>
+
+    <!-- VIEWS CONTENT -->
+    <string name="credits">Credits : %s</string>
+    <plurals name="item_selection_counter">
+        <item quantity="one">1 item selected</item>
+        <item quantity="other">%d items selected</item>
+    </plurals>
+    <string name="search">Search</string>
+    <string name="ok_uppercase">OK</string>
+
+    <!-- VIEWS CONTENT DESCRIPTION -->
+    <string name="item_content_description">item</string>
+    <string name="animation_content_description">animation</string>
+
+    <!-- ERRORS -->
+    <string name="invalid_input">Invalid input</string>
+    <string name="empty_hits">No result for %s</string>
+    <string name="error">Something went wrong</string>
+    <string name="offline">No internet connection</string>
+
+</resources>
