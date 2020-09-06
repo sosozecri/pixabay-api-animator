@@ -2,6 +2,7 @@ package com.zecri.withingstest.data.source.remote
 
 import android.os.Bundle
 import com.zecri.withingstest.data.model.image.PixabayImage
+import com.zecri.withingstest.data.model.video.PixabayVideo
 import com.zecri.withingstest.data.source.PixabayDataSource
 import com.zecri.withingstest.util.formatToUrlEncoded
 import com.zecri.withingstest.util.throwExceptionWhenInvalid
@@ -56,4 +57,24 @@ object PixabayRemoteDataSource : PixabayDataSource() {
         return envelope.hits
     }
 
+    override suspend fun getVideos(parameters: Bundle): List<PixabayVideo>? {
+        throwExceptionWhenInvalid(parameters, TOTAL_VIDEO_AVAILABLE_PARAMETERS)
+
+        val envelope = client.getVideosFromApi(
+            q = parameters.getString(Q, null),
+            lang = parameters.getString(LANG, null),
+            id = if (parameters.containsKey(ID)) parameters.getLong(ID) else null,
+            videoType = parameters.getString(VIDEO_TYPE, null),
+            category = parameters.getString(CATEGORY, null),
+            minWidth = if (parameters.containsKey(MIN_WIDTH)) parameters.getInt(MIN_WIDTH) else null,
+            minHeight = if (parameters.containsKey(MIN_HEIGHT)) parameters.getInt(MIN_HEIGHT) else null,
+            editorsChoice = parameters.getBoolean(EDITORS_CHOICE),
+            safeSearch = parameters.getBoolean(SAFE_SEARCH),
+            order = parameters.getString(ORDER, null),
+            page = if (parameters.containsKey(PAGE)) parameters.getInt(PAGE) else null,
+            perPage = if (parameters.containsKey(PER_PAGE)) parameters.getInt(PER_PAGE) else null,
+            callback = parameters.getString(CALLBACK, null)
+        )
+        return envelope.hits
+    }
 }

@@ -2,6 +2,7 @@ package com.zecri.withingstest.data.source.local
 
 import android.os.Bundle
 import com.zecri.withingstest.data.model.image.PixabayImage
+import com.zecri.withingstest.data.model.video.PixabayVideo
 import com.zecri.withingstest.data.source.PixabayDataSource
 
 /**
@@ -15,5 +16,7 @@ class PixabayLocalDataSource : PixabayDataSource() {
         TODO("Not yet implemented")
     }
 
-
+    override suspend fun getVideos(parameters: Bundle): List<PixabayVideo>? {
+        TODO("Not yet implemented")
+    }
 }

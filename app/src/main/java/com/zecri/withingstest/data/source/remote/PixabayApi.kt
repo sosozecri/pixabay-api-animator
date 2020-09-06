@@ -2,6 +2,7 @@ package com.zecri.withingstest.data.source.remote
 
 import com.zecri.withingstest.data.model.PixabayEnvelope
 import com.zecri.withingstest.data.model.image.PixabayImage
+import com.zecri.withingstest.data.model.video.PixabayVideo
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -55,6 +56,23 @@ interface PixabayApi {
         @Query(CALLBACK) callback: String? = null
     ): PixabayEnvelope<PixabayImage>
 
-    //TODO implement video as a bonus if enought time
+    // Search for Video
+    @GET(API_VIDEO_PATH)
+    suspend fun getVideosFromApi(
+        @Query(KEY) key: String = API_KEY,
+        @Query(Q) q: String? = null,
+        @Query(LANG) lang: String? = null,
+        @Query(ID) id: Long? = null,
+        @Query(VIDEO_TYPE) videoType: String? = null,
+        @Query(CATEGORY) category: String? = null,
+        @Query(MIN_WIDTH) minWidth: Int? = null,
+        @Query(MIN_HEIGHT) minHeight: Int? = null,
+        @Query(EDITORS_CHOICE) editorsChoice: Boolean? = null,
+        @Query(SAFE_SEARCH) safeSearch: Boolean? = null,
+        @Query(ORDER) order: String? = null,
+        @Query(PAGE) page: Int? = null,
+        @Query(PER_PAGE) perPage: Int? = null,
+        @Query(CALLBACK) callback: String? = null
+    ): PixabayEnvelope<PixabayVideo>
 
 }
