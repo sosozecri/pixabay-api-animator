@@ -1,0 +1,176 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PixabayImage</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.zecri.withingstest.data.model.image</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PixabayImage (com.zecri.withingstest.data.model.image)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PixabayImage</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (12/ 12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (35/ 35)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PixabayImage$Companion</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/ 13)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (36/ 36)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.zecri.withingstest.data.model.image
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import androidx.annotation.StringDef
+<i>4</i>&nbsp;import androidx.room.Entity
+<i>5</i>&nbsp;import com.zecri.withingstest.data.model.PixabayMedia
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;@Entity(tableName = &quot;images&quot;) //TODO implement as a bonus if enought time
+<b class="fc"><i>8</i>&nbsp;class PixabayImage(</b>
+<i>9</i>&nbsp;    id: Long,
+<b class="fc"><i>10</i>&nbsp;    pageURL: String? = null,</b>
+<b class="fc"><i>11</i>&nbsp;    type: String? = null,</b>
+<b class="fc"><i>12</i>&nbsp;    tags: String? = null,</b>
+<b class="fc"><i>13</i>&nbsp;    var previewURL: String? = null,</b>
+<b class="fc"><i>14</i>&nbsp;    var previewWidth: Int? = null,</b>
+<b class="fc"><i>15</i>&nbsp;    var previewHeight: Int? = null,</b>
+<b class="fc"><i>16</i>&nbsp;    var webformatURL: String? = null,</b>
+<b class="fc"><i>17</i>&nbsp;    var webformatWidth: Int? = null,</b>
+<b class="fc"><i>18</i>&nbsp;    var webformatHeight: Int? = null,</b>
+<b class="fc"><i>19</i>&nbsp;    var largeImageURL: String? = null,</b>
+<b class="fc"><i>20</i>&nbsp;    var imageWidth: Int? = null,</b>
+<b class="fc"><i>21</i>&nbsp;    var imageHeight: Int? = null,</b>
+<b class="fc"><i>22</i>&nbsp;    var imageSize: Int? = null,</b>
+<b class="fc"><i>23</i>&nbsp;    views: Int? = null,</b>
+<b class="fc"><i>24</i>&nbsp;    downloads: Int? = null,</b>
+<b class="fc"><i>25</i>&nbsp;    favorites: Int? = null,</b>
+<b class="fc"><i>26</i>&nbsp;    likes: Int? = null,</b>
+<b class="fc"><i>27</i>&nbsp;    comments: Int? = null,</b>
+<b class="fc"><i>28</i>&nbsp;    userId: Long? = null,</b>
+<b class="fc"><i>29</i>&nbsp;    user: String? = null,</b>
+<b class="fc"><i>30</i>&nbsp;    userImageURL: String? = null</b>
+<i>31</i>&nbsp;
+<b class="fc"><i>32</i>&nbsp;) : PixabayMedia(</b>
+<b class="fc"><i>33</i>&nbsp;    id,</b>
+<b class="fc"><i>34</i>&nbsp;    pageURL,</b>
+<b class="fc"><i>35</i>&nbsp;    type,</b>
+<b class="fc"><i>36</i>&nbsp;    tags,</b>
+<b class="fc"><i>37</i>&nbsp;    views,</b>
+<b class="fc"><i>38</i>&nbsp;    downloads,</b>
+<b class="fc"><i>39</i>&nbsp;    favorites,</b>
+<b class="fc"><i>40</i>&nbsp;    likes,</b>
+<b class="fc"><i>41</i>&nbsp;    comments,</b>
+<b class="fc"><i>42</i>&nbsp;    userId,</b>
+<b class="fc"><i>43</i>&nbsp;    user,</b>
+<b class="fc"><i>44</i>&nbsp;    userImageURL</b>
+<i>45</i>&nbsp;) {
+<b class="fc"><i>46</i>&nbsp;    companion object {</b>
+<i>47</i>&nbsp;        const val ALL = &quot;all&quot;
+<i>48</i>&nbsp;
+<i>49</i>&nbsp;        const val PHOTO = &quot;photo&quot;
+<i>50</i>&nbsp;        const val VECTOR = &quot;vector&quot;
+<i>51</i>&nbsp;        const val ILLUSTRATION = &quot;illustration&quot;
+<i>52</i>&nbsp;
+<i>53</i>&nbsp;        const val HORIZONTAL = &quot;horizontal&quot;
+<i>54</i>&nbsp;        const val VERTICAL = &quot;vertical&quot;
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;
+<i>57</i>&nbsp;    //Enums have cleaner readability but are quite heavy
+<i>58</i>&nbsp;    // TODO use annotation as a bonus if enought time
+<i>59</i>&nbsp;    @Retention(AnnotationRetention.SOURCE)
+<i>60</i>&nbsp;    @StringDef(ALL, PHOTO, VECTOR, ILLUSTRATION)
+<i>61</i>&nbsp;    annotation class ImageType
+<i>62</i>&nbsp;
+<i>63</i>&nbsp;    @Retention(AnnotationRetention.SOURCE)
+<i>64</i>&nbsp;    @StringDef(VERTICAL, HORIZONTAL)
+<i>65</i>&nbsp;    annotation class Orientation
+<i>66</i>&nbsp;
+<i>67</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-09-06 18:59</div>
+</div>
+</body>
+</html>

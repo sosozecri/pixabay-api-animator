@@ -1,0 +1,145 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: NetworkUtilKt</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.zecri.withingstest.util</a> ]
+</div>
+
+<h1>Coverage Summary for Class: NetworkUtilKt (com.zecri.withingstest.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">NetworkUtilKt</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66,7%
+  </span>
+  <span class="absValue">
+    (4/ 6)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    43,8%
+  </span>
+  <span class="absValue">
+    (7/ 16)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.zecri.withingstest.util
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.Context
+<i>4</i>&nbsp;import android.content.Intent
+<i>5</i>&nbsp;import android.net.ConnectivityManager
+<i>6</i>&nbsp;import android.net.NetworkCapabilities
+<i>7</i>&nbsp;import android.net.Uri
+<i>8</i>&nbsp;import android.os.Build
+<i>9</i>&nbsp;import androidx.annotation.RequiresApi
+<i>10</i>&nbsp;import retrofit2.HttpException
+<i>11</i>&nbsp;import java.io.IOException
+<i>12</i>&nbsp;
+<i>13</i>&nbsp;private const val HTTP_BAD_REQUEST_CODE = 400
+<i>14</i>&nbsp;private const val HTTP_TOO_MANY_REQUEST_CODE = 429
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;/**
+<i>17</i>&nbsp; * Exception describing a situation where the network is not able to reach the internet
+<i>18</i>&nbsp; */
+<i>19</i>&nbsp;class NoConnectivityException(message: String? = null) : IOException(message)
+<i>20</i>&nbsp;
+<b class="fc"><i>21</i>&nbsp;fun HttpException.isBadRequest() = code() == HTTP_BAD_REQUEST_CODE</b>
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;/**
+<i>24</i>&nbsp; * Return true if the network is able to reach the internet, false otherwise
+<i>25</i>&nbsp; */
+<i>26</i>&nbsp;fun Context.isOnline(): Boolean {
+<b class="fc"><i>27</i>&nbsp;    val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager</b>
+<i>28</i>&nbsp;
+<b class="fc"><i>29</i>&nbsp;    return if (Build.VERSION.SDK_INT &gt; Build.VERSION_CODES.P) { //NetworkInfo is deprecated in API 29</b>
+<b class="nc"><i>30</i>&nbsp;        connectivityManager.isOnline()</b>
+<i>31</i>&nbsp;    } else {
+<b class="fc"><i>32</i>&nbsp;        connectivityManager.isOnlineLegacy()</b>
+<i>33</i>&nbsp;    }
+<i>34</i>&nbsp;}
+<i>35</i>&nbsp;
+<i>36</i>&nbsp;/**
+<i>37</i>&nbsp; * Return true if active network info is connected or connecting, false otherwise
+<i>38</i>&nbsp; * NetworkInfo is deprecated in API 29
+<i>39</i>&nbsp; */
+<i>40</i>&nbsp;fun ConnectivityManager.isOnlineLegacy(): Boolean {
+<b class="fc"><i>41</i>&nbsp;    return activeNetworkInfo?.isConnectedOrConnecting == true</b>
+<i>42</i>&nbsp;}
+<i>43</i>&nbsp;
+<i>44</i>&nbsp;/**
+<i>45</i>&nbsp; * Return true if the network is able to reach the internet, false otherwise
+<i>46</i>&nbsp; */
+<i>47</i>&nbsp;@RequiresApi(Build.VERSION_CODES.M)
+<i>48</i>&nbsp;fun ConnectivityManager.isOnline(): Boolean {
+<b class="fc"><i>49</i>&nbsp;    val networkCapabilities: NetworkCapabilities? = getNetworkCapabilities(activeNetwork)</b>
+<b class="fc"><i>50</i>&nbsp;    return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true</b>
+<i>51</i>&nbsp;}
+<i>52</i>&nbsp;
+<b class="nc"><i>53</i>&nbsp;fun Context.openUrl(url: String, offlineExecutable: (() -&gt; Unit)? = null) {</b>
+<b class="nc"><i>54</i>&nbsp;    if (!isOnline()) {</b>
+<b class="nc"><i>55</i>&nbsp;        offlineExecutable?.invoke()</b>
+<b class="nc"><i>56</i>&nbsp;        return</b>
+<i>57</i>&nbsp;    }
+<b class="nc"><i>58</i>&nbsp;    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))</b>
+<b class="nc"><i>59</i>&nbsp;    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK</b>
+<b class="nc"><i>60</i>&nbsp;    startActivity(intent)</b>
+<b class="nc"><i>61</i>&nbsp;}</b>
+<i>62</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-09-06 18:59</div>
+</div>
+</body>
+</html>

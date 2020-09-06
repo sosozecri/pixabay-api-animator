@@ -1,0 +1,148 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: EmptyResponseException</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.zecri.withingstest.util</a> ]
+</div>
+
+<h1>Coverage Summary for Class: EmptyResponseException (com.zecri.withingstest.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">EmptyResponseException</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.zecri.withingstest.util
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.os.Bundle
+<i>4</i>&nbsp;import com.zecri.withingstest.data.model.PixabayMedia
+<i>5</i>&nbsp;import com.zecri.withingstest.data.source.remote.LANG
+<i>6</i>&nbsp;import com.zecri.withingstest.data.source.remote.PAGE
+<i>7</i>&nbsp;import com.zecri.withingstest.data.source.remote.PER_PAGE
+<i>8</i>&nbsp;import com.zecri.withingstest.data.source.remote.Q
+<i>9</i>&nbsp;import java.io.IOException
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;const val SPACE = &quot; &quot;
+<i>12</i>&nbsp;const val DOUBLE_SPACE = &quot;  &quot;
+<i>13</i>&nbsp;const val COMMA = &quot;,&quot;
+<i>14</i>&nbsp;const val TAG_SPLITTER = COMMA + SPACE
+<i>15</i>&nbsp;const val SEARCH_TERMS_SPLITTER = &quot;+&quot;
+<i>16</i>&nbsp;
+<i>17</i>&nbsp;/**
+<i>18</i>&nbsp; * Exception describing a not found situation
+<i>19</i>&nbsp; */
+<b class="fc"><i>20</i>&nbsp;class EmptyResponseException(message: String? = null) : IOException(message)</b>
+<i>21</i>&nbsp;
+<i>22</i>&nbsp;fun createBundle(searchTerms: String) =
+<i>23</i>&nbsp;    Bundle().apply {
+<i>24</i>&nbsp;        putString(Q, searchTerms)
+<i>25</i>&nbsp;    }
+<i>26</i>&nbsp;
+<i>27</i>&nbsp;fun throwExceptionWhenInvalid(bundle: Bundle, maximumBundleSize: Int) {
+<i>28</i>&nbsp;
+<i>29</i>&nbsp;    if (bundle.size() &gt; maximumBundleSize) {
+<i>30</i>&nbsp;        throw IllegalArgumentException()
+<i>31</i>&nbsp;    }
+<i>32</i>&nbsp;
+<i>33</i>&nbsp;    if (bundle.containsKey(LANG) &amp;&amp; bundle.getString(LANG)
+<i>34</i>&nbsp;            ?.let { it in PixabayMedia.LANGS } != true
+<i>35</i>&nbsp;    ) {
+<i>36</i>&nbsp;        throw IllegalArgumentException(LANG)
+<i>37</i>&nbsp;    }
+<i>38</i>&nbsp;    if (bundle.containsKey(PAGE) &amp;&amp; bundle.getInt(PAGE) &lt; 1) {
+<i>39</i>&nbsp;        throw IllegalArgumentException(PAGE)
+<i>40</i>&nbsp;    }
+<i>41</i>&nbsp;    if (bundle.containsKey(PER_PAGE) &amp;&amp; bundle.getInt(PER_PAGE) !in 3..200) {
+<i>42</i>&nbsp;        throw IllegalArgumentException(PER_PAGE)
+<i>43</i>&nbsp;    }
+<i>44</i>&nbsp;    //TODO CONTINUE CHECK WITH OTHER PARAMETERS...
+<i>45</i>&nbsp;}
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;fun formatToUrlEncoded(searchTerm: String): String? {
+<i>48</i>&nbsp;    var _searchTerm = searchTerm.replace(COMMA, SPACE)
+<i>49</i>&nbsp;
+<i>50</i>&nbsp;    while (DOUBLE_SPACE in _searchTerm) {
+<i>51</i>&nbsp;        _searchTerm = _searchTerm.replace(DOUBLE_SPACE, SPACE)
+<i>52</i>&nbsp;    }
+<i>53</i>&nbsp;    if (_searchTerm.endsWith(SPACE)) {
+<i>54</i>&nbsp;        _searchTerm = _searchTerm.removeSuffix(SPACE)
+<i>55</i>&nbsp;    }
+<i>56</i>&nbsp;    if (_searchTerm.startsWith(SPACE)) {
+<i>57</i>&nbsp;        _searchTerm = _searchTerm.removePrefix(SPACE)
+<i>58</i>&nbsp;    }
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    if (_searchTerm.isEmpty()) {
+<i>61</i>&nbsp;        return null
+<i>62</i>&nbsp;    }
+<i>63</i>&nbsp;
+<i>64</i>&nbsp;    return _searchTerm.replace(SPACE, SEARCH_TERMS_SPLITTER)
+<i>65</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-09-06 18:59</div>
+</div>
+</body>
+</html>

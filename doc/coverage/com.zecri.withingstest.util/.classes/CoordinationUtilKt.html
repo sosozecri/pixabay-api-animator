@@ -1,0 +1,126 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: CoordinationUtilKt</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.zecri.withingstest.util</a> ]
+</div>
+
+<h1>Coverage Summary for Class: CoordinationUtilKt (com.zecri.withingstest.util)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">CoordinationUtilKt</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    90%
+  </span>
+  <span class="absValue">
+    (9/ 10)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.zecri.withingstest.util
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.content.res.Resources
+<i>4</i>&nbsp;import com.zecri.withingstest.R
+<i>5</i>&nbsp;import retrofit2.HttpException
+<i>6</i>&nbsp;
+<i>7</i>&nbsp;/**
+<i>8</i>&nbsp; * Interfaces used for fragment &amp; activity coordination
+<i>9</i>&nbsp; */
+<i>10</i>&nbsp;
+<i>11</i>&nbsp;interface Navigable {
+<i>12</i>&nbsp;    var onNext: (() -&gt; Unit)?
+<i>13</i>&nbsp;    var onPrevious: (() -&gt; Unit)?
+<i>14</i>&nbsp;}
+<i>15</i>&nbsp;
+<i>16</i>&nbsp;interface ErrorNotifier&lt;Error : Throwable?&gt; {
+<i>17</i>&nbsp;    var onError: ((Error) -&gt; Unit)?
+<i>18</i>&nbsp;}
+<i>19</i>&nbsp;
+<i>20</i>&nbsp;/**
+<i>21</i>&nbsp; * Generate an error message coordinated to the value of
+<i>22</i>&nbsp; * @param throwable
+<i>23</i>&nbsp; */
+<i>24</i>&nbsp;fun Resources.getErrorMessage(throwable: Throwable?): String {
+<b class="fc"><i>25</i>&nbsp;    return when {</b>
+<i>26</i>&nbsp;
+<b class="fc"><i>27</i>&nbsp;        throwable is IllegalArgumentException</b>
+<b class="fc"><i>28</i>&nbsp;                || (throwable is HttpException &amp;&amp; throwable.isBadRequest()) -&gt; getString(R.string.invalid_input)</b>
+<i>29</i>&nbsp;
+<b class="fc"><i>30</i>&nbsp;        throwable is EmptyResponseException -&gt; String.format(</b>
+<b class="fc"><i>31</i>&nbsp;            getString(R.string.empty_hits),</b>
+<b class="fc"><i>32</i>&nbsp;            throwable.message</b>
+<i>33</i>&nbsp;        )
+<i>34</i>&nbsp;
+<b class="fc"><i>35</i>&nbsp;        throwable is NoConnectivityException -&gt; getString(R.string.offline)</b>
+<i>36</i>&nbsp;
+<b class="fc"><i>37</i>&nbsp;        throwable?.message?.isNotEmpty() == true -&gt; throwable.message</b>
+<b class="nc"><i>38</i>&nbsp;            ?: getString(R.string.error) // if throwable is non null and throwable message is non null &amp; not empty</b>
+<i>39</i>&nbsp;
+<b class="fc"><i>40</i>&nbsp;        else -&gt; getString(R.string.error)</b>
+<i>41</i>&nbsp;    }
+<i>42</i>&nbsp;}
+<i>43</i>&nbsp;
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-09-06 18:59</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,211 @@
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html id="htmlId">
+<head>
+  <title>Coverage Report :: PixabayViewModel</title>
+  <style type="text/css">
+    @import "../../.css/coverage.css";
+  </style>
+</head>
+
+<body>
+<div class="header"></div>
+
+<div class="content">
+<div class="breadCrumbs">
+    [ <a href="../../index.html">all classes</a> ]
+    [ <a href="../index.html">com.zecri.withingstest.ui</a> ]
+</div>
+
+<h1>Coverage Summary for Class: PixabayViewModel (com.zecri.withingstest.ui)</h1>
+
+<table class="coverageStats">
+
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">PixabayViewModel</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+</tr>
+  <tr>
+    <td class="name">PixabayViewModel$$special$$inlined$switchMap$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (2/ 2)
+  </span>
+</td>
+  </tr>
+  <tr>
+    <td class="name">PixabayViewModel$$special$$inlined$switchMap$1$lambda$1</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/ 1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (10/ 10)
+  </span>
+</td>
+  </tr>
+<tr>
+  <td class="name"><strong>total</strong></td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (3/ 3)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (13/ 13)
+  </span>
+</td>
+</tr>
+</table>
+
+<br/>
+<br/>
+
+
+<div class="sourceCode"><i>1</i>&nbsp;package com.zecri.withingstest.ui
+<i>2</i>&nbsp;
+<i>3</i>&nbsp;import android.os.Bundle
+<i>4</i>&nbsp;import androidx.lifecycle.*
+<i>5</i>&nbsp;import com.zecri.withingstest.data.model.image.PixabayImage
+<i>6</i>&nbsp;import com.zecri.withingstest.data.source.PixabayMediaRepository
+<i>7</i>&nbsp;import com.zecri.withingstest.data.source.remote.Q
+<i>8</i>&nbsp;import com.zecri.withingstest.util.EmptyResponseException
+<i>9</i>&nbsp;
+<i>10</i>&nbsp;internal class PixabayViewModel(
+<i>11</i>&nbsp;    private val repository: PixabayMediaRepository = PixabayMediaRepository(),
+<i>12</i>&nbsp;    ) : ViewModel() {
+<i>13</i>&nbsp;
+<i>14</i>&nbsp;    //----------------------------------------------------------------------------
+<i>15</i>&nbsp;    // Properties
+<i>16</i>&nbsp;    //----------------------------------------------------------------------------
+<i>17</i>&nbsp;
+<i>18</i>&nbsp;    /**
+<i>19</i>&nbsp;     * Search request parameters formatted as a bundle
+<i>20</i>&nbsp;     */
+<i>21</i>&nbsp;    private var searchParameters = MutableLiveData&lt;Bundle&gt;()
+<i>22</i>&nbsp;
+<i>23</i>&nbsp;    /**
+<i>24</i>&nbsp;     * Livedata responsible of selected images lifecycle survival
+<i>25</i>&nbsp;     */
+<i>26</i>&nbsp;    internal var selectedImages = MutableLiveData&lt;MutableList&lt;PixabayImage&gt;&gt;()
+<i>27</i>&nbsp;
+<i>28</i>&nbsp;    /**
+<i>29</i>&nbsp;     * Livedata responsible of images lifecycle survival
+<i>30</i>&nbsp;     */
+<i>31</i>&nbsp;    internal var images: LiveData&lt;Result&lt;List&lt;PixabayImage&gt;?&gt;&gt; =
+<i>32</i>&nbsp;        searchParameters.switchMap { parameters -&gt; //switch map used to get images livedata notified when search parameters value changes
+<b class="fc"><i>33</i>&nbsp;            liveData { //no need to pass any Dispatchers.IO scheduler because Retrofit does that for you (since Retrofit 2.6.0).</b>
+<b class="fc"><i>34</i>&nbsp;                try {</b>
+<b class="fc"><i>35</i>&nbsp;                    val result = repository.getImages(parameters)</b>
+<b class="fc"><i>36</i>&nbsp;                    if (result?.isEmpty() == true) {</b>
+<b class="fc"><i>37</i>&nbsp;                        throw EmptyResponseException(parameters.getString(Q))</b>
+<i>38</i>&nbsp;                    }
+<b class="fc"><i>39</i>&nbsp;                    emit(Result.success(result))</b>
+<i>40</i>&nbsp;
+<b class="fc"><i>41</i>&nbsp;                } catch (exception: Exception) {</b>
+<b class="fc"><i>42</i>&nbsp;                    emit(Result.failure(exception))</b>
+<b class="fc"><i>43</i>&nbsp;                }</b>
+<b class="fc"><i>44</i>&nbsp;            }</b>
+<i>45</i>&nbsp;        }
+<i>46</i>&nbsp;
+<i>47</i>&nbsp;    /**
+<i>48</i>&nbsp;     * Update the search parameters value
+<i>49</i>&nbsp;     * Every time the search input changes and is validated by the button click,
+<i>50</i>&nbsp;     * the images livedata is notified and performs search result using the new search terms
+<i>51</i>&nbsp;     */
+<i>52</i>&nbsp;    fun loadImages(parameters: Bundle? = null) {
+<i>53</i>&nbsp;        searchParameters.value = parameters
+<i>54</i>&nbsp;    }
+<i>55</i>&nbsp;
+<i>56</i>&nbsp;    //----------------------------------------------------------------------------
+<i>57</i>&nbsp;    // Methods
+<i>58</i>&nbsp;    //----------------------------------------------------------------------------
+<i>59</i>&nbsp;
+<i>60</i>&nbsp;    /**
+<i>61</i>&nbsp;     * Add a selected image to the selected list, or remove it if already existing
+<i>62</i>&nbsp;     * @return :
+<i>63</i>&nbsp;     * false if the image was already selected and is turned to be unselected
+<i>64</i>&nbsp;     * true if the image was not selected before and is turned to be selected
+<i>65</i>&nbsp;     */
+<i>66</i>&nbsp;    fun switchSelectionState(image: PixabayImage): Boolean {
+<i>67</i>&nbsp;        val value = selectedImages.value
+<i>68</i>&nbsp;        if (value == null) {
+<i>69</i>&nbsp;            selectedImages.value = mutableListOf(image)
+<i>70</i>&nbsp;            return true
+<i>71</i>&nbsp;        }
+<i>72</i>&nbsp;
+<i>73</i>&nbsp;        val isAlreadySelected = image in value
+<i>74</i>&nbsp;        if (isAlreadySelected) {
+<i>75</i>&nbsp;            value -= image
+<i>76</i>&nbsp;        } else {
+<i>77</i>&nbsp;            value += image
+<i>78</i>&nbsp;        }
+<b class="fc"><i>79</i>&nbsp;        selectedImages.value = value //mandatory call to notify the observers</b>
+<i>80</i>&nbsp;        return !isAlreadySelected
+<i>81</i>&nbsp;    }
+<i>82</i>&nbsp;
+<i>83</i>&nbsp;}
+</div>
+</div>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2020-09-06 18:59</div>
+</div>
+</body>
+</html>
