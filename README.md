@@ -1,9 +1,8 @@
 # Pixabay API Consumer Android application
-Search & display images fetched from Pixabay API
+Search & display images fetched from Pixabay API.
 Create a fading animation with selected images
 
 ## About
-Android application that
 
 - Author : Sophie ZECRI
 - Created on : 09/06/2020
@@ -15,10 +14,10 @@ Android application that
 ## Run
 
 - In search page
- - Please click on minimum 2 images.
- - Multiple search words can be separated using space or comma.
- - Click on the floating action button to launch the animation
- - Press the system back button to exit the application.
+  - Please click on minimum 2 images.
+  - Multiple search words can be separated using space or comma.
+  - Click on the floating action button to launch the animation
+  - Press the system back button to exit the application.
 
 - In animation page
   - Press the system back button to exit the animation.
@@ -27,7 +26,5 @@ Android application that
 ## Test
 
 - Test & coverage reports are located in the doc folder at the root of the project
-
-## Test
 
 Feel free to add your review and create a pull request with your suggestions.
