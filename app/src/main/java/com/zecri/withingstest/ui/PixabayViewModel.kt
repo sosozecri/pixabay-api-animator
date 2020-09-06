@@ -28,7 +28,7 @@ internal class PixabayViewModel(
     /**
      * Livedata responsible of images lifecycle survival
      */
-    internal var images: LiveData<Result<List<PixabayImage>?>> =
+    internal var imagesResult: LiveData<Result<List<PixabayImage>?>> =
         searchParameters.switchMap { parameters -> //switch map used to get images livedata notified when search parameters value changes
             liveData { //no need to pass any Dispatchers.IO scheduler because Retrofit does that for you (since Retrofit 2.6.0).
                 try {
@@ -43,6 +43,11 @@ internal class PixabayViewModel(
                 }
             }
         }
+
+    /**
+     * Wrapper function to avoid chaining call to get the images from imagesResult
+     */
+    fun getImages() : List<PixabayImage>? = imagesResult.value?.getOrNull()
 
     /**
      * Update the search parameters value

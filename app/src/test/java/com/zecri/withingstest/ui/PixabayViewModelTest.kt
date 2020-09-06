@@ -41,7 +41,7 @@ internal class PixabayViewModelTest {
     fun setUp() {
         MockKAnnotations.init(this)
         pixabayViewModel = PixabayViewModel(repository)
-        pixabayViewModel.images.observeForever(imagesLoadingObserver)
+        pixabayViewModel.imagesResult.observeForever(imagesLoadingObserver)
         val searchParameters = "husky"
         every { parameters.getString(Q) } returns searchParameters
     }
@@ -122,7 +122,7 @@ internal class PixabayViewModelTest {
 
     @After
     fun tearDown() {
-        pixabayViewModel.images.removeObserver(imagesLoadingObserver)
+        pixabayViewModel.imagesResult.removeObserver(imagesLoadingObserver)
         unmockkAll()
     }
 

@@ -16,8 +16,7 @@ import kotlinx.android.synthetic.main.item_image.view.*
  */
 class PixabayImageAdapter(
     private val images: List<PixabayImage>,
-    private val onImageSelectedAction: ((PixabayImage) -> Boolean),
-    private val alreadySelectedItems: List<PixabayImage>? = null
+    private val onImageSelectedAction: ((PixabayImage) -> Unit),
 ) : RecyclerView.Adapter<PixabayImageAdapter.PixabayImageViewHolder>() {
 
     /**
@@ -30,17 +29,17 @@ class PixabayImageAdapter(
          */
         fun bind(image: PixabayImage) {
             Picasso.get().load(image.webformatURL).into(itemView.imageView)
-            itemView.setOnClickListener {
-                val isSelected =
-                    onImageSelectedAction(image) //responsible for the floating action button display or hide
-                if (isSelected)
-                    itemView.select()
-                else
-                    itemView.unselect()
-            }
-            if (alreadySelectedItems?.contains(image) == true) {
+            itemView.setOnClickListener { onImageSelectedAction(image) }
+        }
+
+        /**
+         * Update the Pixabay image item view content
+         */
+        fun update(isSelected: Boolean) {
+            if (isSelected)
                 itemView.select()
-            }
+            else
+                itemView.unselect()
         }
     }
 
@@ -58,6 +57,13 @@ class PixabayImageAdapter(
     override fun onBindViewHolder(holder: PixabayImageViewHolder, position: Int) {
         val image = images[position]
         holder.bind(image)
+    }
+
+    /**
+     * Replace the content of each Pixabay image item view
+     */
+    fun setSelectedViewHolder(holder: PixabayImageViewHolder, isSelected: Boolean) {
+        holder.update(isSelected)
     }
 
     override fun getItemCount() = images.size

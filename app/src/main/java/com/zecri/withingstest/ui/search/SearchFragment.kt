@@ -1,13 +1,12 @@
 package com.zecri.withingstest.ui.search
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
+import android.view.*
 import android.view.View.OnClickListener
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.zecri.withingstest.R
 import com.zecri.withingstest.data.model.image.PixabayImage
@@ -18,6 +17,7 @@ import kotlinx.android.synthetic.main.layout_footer.*
 import kotlinx.android.synthetic.main.layout_header_search.*
 import kotlinx.android.synthetic.main.layout_header_selection.*
 import kotlinx.android.synthetic.main.search_fragment.*
+
 
 class SearchFragment : Fragment(), Navigable, ErrorNotifier<Throwable?> {
 
@@ -108,8 +108,9 @@ class SearchFragment : Fragment(), Navigable, ErrorNotifier<Throwable?> {
      */
     private fun setupSelectionHeader() {
         selectionHeader.hide()
+    }
 
-        pixabayViewModel.selectedImages.observe(viewLifecycleOwner) { selected ->
+    private val selectionObserver = Observer<List<PixabayImage>?> { selected ->
             val counter = selected.size
 
             animationButton.run { //hide animation button if counter < 2
@@ -125,19 +126,29 @@ class SearchFragment : Fragment(), Navigable, ErrorNotifier<Throwable?> {
                 else { show() }
             }
             val selectionCounterText = resources.getQuantityString( //get singular or plural accordind to the counter value
-                    R.plurals.item_selection_counter,
-                    counter
-                )
+                R.plurals.item_selection_counter,
+                counter
+            )
             val formattedText = String.format(selectionCounterText, counter)
             selectionCounter.text = formattedText
+
+            val images = pixabayViewModel.getImages() ?: return@Observer
+            for ((index, image) in images.withIndex()) { // update the view holders added / removed from selection list
+                val isSelected = pixabayViewModel.selectedImages.value?.contains(image) == true
+                val child = imagesRecyclerView.getChildAt(index)
+                if(child != null) {
+                    val holder = imagesRecyclerView.getChildViewHolder(child) as PixabayImageAdapter.PixabayImageViewHolder
+                    (imagesRecyclerView.adapter as PixabayImageAdapter).setSelectedViewHolder(holder, isSelected)
+                }
+            }
         }
-    }
+
 
     /**
      * Set up the pixabay view model
      */
     private fun setupViewModel() {
-        pixabayViewModel.images.observe(viewLifecycleOwner) { result ->
+        pixabayViewModel.imagesResult.observe(viewLifecycleOwner) { result ->
             when {
                 result.isSuccess -> result.getOrNull()?.let { showImages(it) }
                 result.isFailure -> showError(result.exceptionOrNull())
@@ -149,10 +160,9 @@ class SearchFragment : Fragment(), Navigable, ErrorNotifier<Throwable?> {
      * Set up the recycler view with an empty value
      */
     private fun setupRecyclerView() {
-        val alreadySelectedImages = pixabayViewModel.selectedImages.value
-        val alreadyLoadedImages = pixabayViewModel.images.value?.getOrNull() ?: arrayListOf()
-        if (alreadyLoadedImages.isEmpty()) {
-            updateRecyclerView(alreadyLoadedImages, alreadySelectedImages)
+        val currentImages = pixabayViewModel.imagesResult.value?.getOrNull() ?: arrayListOf()
+        if (currentImages.isEmpty()) {
+            updateRecyclerView(currentImages)
         }
     }
 
@@ -183,24 +193,21 @@ class SearchFragment : Fragment(), Navigable, ErrorNotifier<Throwable?> {
     /**
      * Update the recycler view content with new values
      */
-    private fun updateRecyclerView(
-        images: List<PixabayImage>,
-        alreadySelectedImages: List<PixabayImage>?
-    ) {
+    private fun updateRecyclerView(images: List<PixabayImage>) {
 
-        val onImageSelectedAction =
+        val onImageSelectedAction : ((PixabayImage) -> Unit) =
             { image: PixabayImage -> pixabayViewModel.switchSelectionState(image) }
 
         val pixabayImageAdapter = PixabayImageAdapter(
             images = images,
             onImageSelectedAction = onImageSelectedAction,
-            alreadySelectedItems = alreadySelectedImages
         )
         imagesRecyclerView.apply {
             setHasFixedSize(true) // use this setting to improve performance
             layoutManager = LinearLayoutManager(activity)
             adapter = pixabayImageAdapter
         }
+        pixabayViewModel.selectedImages.observe(viewLifecycleOwner, selectionObserver) // observe selection once the recycler view is ready
     }
 
     /**
@@ -218,8 +225,7 @@ class SearchFragment : Fragment(), Navigable, ErrorNotifier<Throwable?> {
         if (images.isEmpty()) {
             return
         }
-        val alreadySelectedImages = pixabayViewModel.selectedImages.value
-        updateRecyclerView(images, alreadySelectedImages)
+        updateRecyclerView(images)
         hideLoading()
     }
 
