@@ -6,7 +6,7 @@ Create a fading animation with selected images
 
 - Author : Sophie ZECRI
 - Created on : 09/06/2020
-- Version : 1.0.0
+- Version : 1.0.1
 - Language : Kotlin
 - Compile SDK version 29 
 - Min 22 SDK version (Android 5.1)
